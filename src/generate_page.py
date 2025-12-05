@@ -2,7 +2,7 @@ import os
 from markdown_blocks import extract_title, markdown_to_html_node
 from htmlnode import HTMLNode, ParentNode, LeafNode
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} using {template_path} to {dest_path}")
     
     if not os.path.isfile(from_path):
@@ -26,6 +26,8 @@ def generate_page(from_path, template_path, dest_path):
         html_template
         .replace("{{ Title }}", title)
         .replace("{{ Content }}", html_string)
+        .replace('href="/', 'href="' + basepath)
+        .replace('src="/', 'src="' + basepath)
     )
     
     with open(dest_path, "w", encoding="utf-8") as f:
@@ -33,7 +35,7 @@ def generate_page(from_path, template_path, dest_path):
 
     print(f"Page successfully generated: {dest_path}")
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     # Loop through all items in the content directory
     for entry in os.listdir(dir_path_content):
         entry_path = os.path.join(dir_path_content, entry)
@@ -45,7 +47,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
 
-            generate_pages_recursive(entry_path, template_path, dest_path)
+            generate_pages_recursive(entry_path, template_path, dest_path, basepath)
 
         # If entry is a markdown file → generate a page
         elif os.path.isfile(entry_path) and entry.endswith(".md"):
@@ -55,9 +57,8 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             generate_page(
                 from_path=entry_path,
                 template_path=template_path,
-                dest_path=dest_file
+                dest_path=dest_file,
+                basepath=basepath
             )
-
-
 
     
