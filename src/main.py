@@ -13,11 +13,12 @@ from_path = "./content"
 template_path = "./template.html"
 dest_path = "./docs"
 
-default_basepath = sys.argv[0]
+default_basepath = "/"
 
 def main():
     basepath = default_basepath
     if len(sys.argv) > 1:
+        print("BASEPATH RECEIVED:", basepath)
         basepath = sys.argv[1]
         
     print("Deleting public directory...")
