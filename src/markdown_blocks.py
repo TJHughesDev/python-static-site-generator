@@ -51,7 +51,6 @@ def block_to_block_type(block):
         return BlockType.OLIST
     return BlockType.PARAGRAPH
 
-# --------------------------------------------
 
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
@@ -149,55 +148,3 @@ def quote_to_html_node(block):
     content = " ".join(new_lines)
     children = text_to_children(content)
     return ParentNode("blockquote", children)
-
-def extract_title(markdown):
-    lines = markdown.split("\n")  # split the markdown into lines
-
-    for line in lines:
-        if line.startswith("# "):  # only H1
-            return line[2:].strip()  # remove "# " prefix
-
-    # If no H1 found, raise an error
-    raise ValueError("No H1 tag found in markdown")
-
-
-# ------------------------------------------------------------------------
-# Example HTML AST
-# ------------------------------------------------------------------------
-
-# ParentNode("div", children=[
-    
-#     ParentNode("h1", children=[
-#         LeafNode(None, "My Title")
-#     ]),
-
-#     ParentNode("p", children=[
-#         LeafNode(None, "This is "),
-#         LeafNode("b", "bold"),
-#         LeafNode(None, " and "),
-#         LeafNode("i", "italic"),
-#         LeafNode(None, " text.")
-#     ]),
-
-#     ParentNode("ul", children=[
-#         ParentNode("li", children=[LeafNode(None, "Item one")]),
-#         ParentNode("li", children=[LeafNode(None, "Item two")])
-#     ]),
-
-#     ParentNode("ol", children=[
-#         ParentNode("li", children=[LeafNode(None, "First")]),
-#         ParentNode("li", children=[LeafNode(None, "Second")])
-#     ]),
-
-#     ParentNode("blockquote", children=[
-#         LeafNode(None, "A quote over two lines")
-#     ]),
-
-#     ParentNode("pre", children=[
-#         ParentNode("code", children=[
-#             LeafNode(None, "code block")
-#         ])
-#     ])
-
-# ])
-
